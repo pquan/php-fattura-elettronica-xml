@@ -8,8 +8,11 @@
 namespace Advinser\FatturaElettronicaXml\Body;
 
 
+use Advinser\FatturaElettronicaXml\FatturaElettronica;
 use Advinser\FatturaElettronicaXml\FatturaElettronicaException;
 use Advinser\FatturaElettronicaXml\Structures\DatiRiferimento;
+use Advinser\FatturaElettronicaXml\Validation\ValidateError;
+use Advinser\FatturaElettronicaXml\Validation\ValidateErrorContainer;
 
 class DatiGenerali
 {
@@ -18,7 +21,7 @@ class DatiGenerali
      */
     private $DatiGeneraliDocumento;
     /**
-     * @var DatiRiferimento|null
+     * @var DatiRiferimento[]|null
      */
     private $DatiOrdineAcquisto;
     /**
@@ -45,18 +48,11 @@ class DatiGenerali
      * @var null|string
      */
     private $RiferimentoFase = null;
+
     /**
-     * @var null|string
+     * @var DatiDDT[] | null
      */
-    private $NumeroDDT = null;
-    /**
-     * @var null|string
-     */
-    private $DataDDT = null;
-    /**
-     * @var null|string
-     */
-    private $RiferimentoNumeroLinea = null;
+    private $DatiDDT;
 
     /**
      * @var DatiTrasporto|null
@@ -72,6 +68,34 @@ class DatiGenerali
      * @var string|null
      */
     private $DataFatturaPrincipale;
+
+    /**
+     * @return DatiDDT[]|null
+     */
+    public function getDatiDDT(): ?array
+    {
+        return $this->DatiDDT;
+    }
+
+    /**
+     * @param DatiDDT[]|null $datiDDT
+     * @return DatiDDT
+     */
+    public function setDatiDDT(?array $datiDDT): DatiGenerali
+    {
+        $this->DatiDDT = $datiDDT;
+        return $this;
+    }
+
+    /**
+     * @param DatiDDT $datiDDT
+     * @return DatiGenerali
+     */
+    public function addDatiDDT(DatiDDT $datiDDT): DatiGenerali
+    {
+        $this->DatiDDT[] = $datiDDT;
+        return $this;
+    }
 
     /**
      * @return DatiGeneraliDocumento|null
@@ -93,20 +117,30 @@ class DatiGenerali
 
 
     /**
-     * @return DatiRiferimento|null
+     * @return DatiRiferimento[]|null
      */
-    public function getDatiOrdineAcquisto(): ?DatiRiferimento
+    public function getDatiOrdineAcquisto(): ?array
     {
         return $this->DatiOrdineAcquisto;
+    }
+
+    /**
+     * @param DatiRiferimento[] $DatiOrdineAcquisto
+     * @return DatiGenerali
+     */
+    public function setDatiOrdineAcquisto(array $DatiOrdineAcquisto): DatiGenerali
+    {
+        $this->DatiOrdineAcquisto = $DatiOrdineAcquisto;
+        return $this;
     }
 
     /**
      * @param DatiRiferimento|null $DatiOrdineAcquisto
      * @return DatiGenerali
      */
-    public function setDatiOrdineAcquisto(?DatiRiferimento $DatiOrdineAcquisto): DatiGenerali
+    public function addDatiOrdineAcquisto(?DatiRiferimento $DatiOrdineAcquisto): DatiGenerali
     {
-        $this->DatiOrdineAcquisto = $DatiOrdineAcquisto;
+        $this->DatiOrdineAcquisto[] = $DatiOrdineAcquisto;
         return $this;
     }
 
@@ -201,60 +235,6 @@ class DatiGenerali
     }
 
     /**
-     * @return null|string
-     */
-    public function getNumeroDDT(): ?string
-    {
-        return $this->NumeroDDT;
-    }
-
-    /**
-     * @param null|string $NumeroDDT
-     * @return DatiGenerali
-     */
-    public function setNumeroDDT(?string $NumeroDDT): DatiGenerali
-    {
-        $this->NumeroDDT = $NumeroDDT;
-        return $this;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getDataDDT(): ?string
-    {
-        return $this->DataDDT;
-    }
-
-    /**
-     * @param null|string $DataDDT
-     * @return DatiGenerali
-     */
-    public function setDataDDT(?string $DataDDT): DatiGenerali
-    {
-        $this->DataDDT = $DataDDT;
-        return $this;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getRiferimentoNumeroLinea(): ?string
-    {
-        return $this->RiferimentoNumeroLinea;
-    }
-
-    /**
-     * @param null|string $RiferimentoNumeroLinea
-     * @return DatiGenerali
-     */
-    public function setRiferimentoNumeroLinea(?string $RiferimentoNumeroLinea): DatiGenerali
-    {
-        $this->RiferimentoNumeroLinea = $RiferimentoNumeroLinea;
-        return $this;
-    }
-
-    /**
      * @return DatiTrasporto|null
      */
     public function getDatiTrasporto(): ?DatiTrasporto
@@ -336,8 +316,10 @@ class DatiGenerali
             //todo controllare se toarray è vuoto
         }
 
-        if ($this->getDatiOrdineAcquisto() instanceof DatiRiferimento) {
-            $array['DatiOrdineAcquisto'] = $this->getDatiOrdineAcquisto()->toArray();
+        if (!empty($this->getDatiOrdineAcquisto())) {
+            foreach ($this->getDatiOrdineAcquisto() as $ordineAcquisto) {
+                $array['DatiOrdineAcquisto'][] = $ordineAcquisto->toArray();
+            }
         }
 
         if ($this->getDatiContratto() instanceof DatiRiferimento) {
@@ -359,14 +341,17 @@ class DatiGenerali
         if (!empty($this->getRiferimentoFase())) {
             $array['DatiSAL']['RiferimentoFase'] = $this->getRiferimentoFase();
         }
-        if (!empty($this->getNumeroDDT())) {
-            $array['DatiDDT']['NumeroDDT'] = $this->getNumeroDDT();
-        }
-        if (!empty($this->getDataDDT())) {
-            $array['DatiDDT']['NumeroDDT'] = $this->getDataDDT();
-        }
-        if (!empty($this->getRiferimentoNumeroLinea())) {
-            $array['DatiDDT']['RiferimentoNumeroLinea'] = $this->getRiferimentoNumeroLinea();
+
+        if (!empty($this->getDatiDDT())) {
+            if (count($this->getDatiDDT()) === 1) {
+                $array['DatiDDT'] = $this->getDatiDDT()[0]->toArray();
+            } else {
+                $a = [];
+                foreach ($this->getDatiDDT() as $DatiDDT) {
+                    $a[] = $DatiDDT->toArray();
+                }
+                $array['DatiDDT'] = $a;
+            }
         }
 
         if ($this->getDatiTrasporto() instanceof DatiTrasporto) {
@@ -387,14 +372,16 @@ class DatiGenerali
      * @param array $array
      * @return DatiGenerali
      */
-    public static function fromArray(array $array) : DatiGenerali
+    public static function fromArray(array $array): DatiGenerali
     {
         $o = new DatiGenerali();
         if (!empty($array['DatiGeneraliDocumento'])) {
             $o->setDatiGeneraliDocumento(DatiGeneraliDocumento::fromArray($array['DatiGeneraliDocumento']));
         }
         if (!empty($array['DatiOrdineAcquisto'])) {
-            $o->setDatiOrdineAcquisto(DatiRiferimento::fromArray($array['DatiOrdineAcquisto']));
+            foreach ($array['DatiOrdineAcquisto'] as $datiOrdineAcquisto) {
+                $o->addDatiOrdineAcquisto(DatiRiferimento::fromArray($datiOrdineAcquisto));
+            }
         }
         if (!empty($array['DatiContratto'])) {
             $o->setDatiContratto(DatiRiferimento::fromArray($array['DatiContratto']));
@@ -412,29 +399,70 @@ class DatiGenerali
         if (!empty($array['DatiSAL']['RiferimentoFase'])) {
             $o->setRiferimentoFase($array['DatiSAL']['RiferimentoFase']);
         }
-        if (!empty($array['DatiDDT']['NumeroDDT'])) {
-            $o->setNumeroDDT($array['DatiDDT']['NumeroDDT']);
-        }
-        if (!empty($array['DatiDDT']['NumeroDDT'])) {
-            $o->setDataDDT($array['DatiDDT']['NumeroDDT']);
-        }
-        if (!empty($array['DatiDDT']['RiferimentoNumeroLinea'])) {
-             $o->setRiferimentoNumeroLinea($array['DatiDDT']['RiferimentoNumeroLinea']);
+
+        if (isset($array['DatiDDT'])) {
+            if (isset($array['DatiDDT'][0])) {
+                foreach ($array['DatiDDT'] as $item) {
+                    $o->addDatiDDT(DatiDDT::fromArray($item));
+                }
+            } else {
+                $o->addDatiDDT(DatiDDT::fromArray($array['DatiDDT']));
+            }
         }
 
         if (!empty($array['DatiTrasporto'])) {
-             $o->setDatiTrasporto(DatiTrasporto::fromArray($array['DatiTrasporto']));
+            $o->setDatiTrasporto(DatiTrasporto::fromArray($array['DatiTrasporto']));
         }
 
         if (!empty($array['FatturaPrincipale']['NumeroFatturaPrincipale'])) {
-             $o->setNumeroFatturaPrincipale($array['FatturaPrincipale']['NumeroFatturaPrincipale']);
+            $o->setNumeroFatturaPrincipale($array['FatturaPrincipale']['NumeroFatturaPrincipale']);
         }
         if (!empty($array['FatturaPrincipale']['DataFatturaPrincipale'])) {
             $o->setDataFatturaPrincipale($array['FatturaPrincipale']['DataFatturaPrincipale']);
         }
-        
+
         return $o;
-        
+
+    }
+
+    /**
+     * @param array $array
+     * @param ValidateErrorContainer $errorContainer
+     * @param string $tag
+     */
+    public static function validate(array $array, ValidateErrorContainer $errorContainer, $tag = '')
+    {
+        if (empty($array['NomeAttachment'])) {
+            $errorContainer->addError(new ValidateError('Obect', FatturaElettronica::ERROR_LEVEL_REQUIRED, $tag . "Missing 'NomeAttachment'", 'Allegati::01', __LINE__));
+        } else {
+            if (strlen($array['NomeAttachment']) > 60) {
+                $errorContainer->addError(new ValidateError('Obect', FatturaElettronica::ERROR_LEVEL_INVALID, $tag . "Invalid 'NomeAttachment', max length is 60", 'Allegati::02', __LINE__));
+            }
+
+        }
+        if (empty($array['Attachment'])) {
+            $errorContainer->addError(new ValidateError('Obect', FatturaElettronica::ERROR_LEVEL_REQUIRED, $tag . "Missing 'Attachment'", 'Allegati::03', __LINE__));
+        } else {
+            //todo calcolo peso da base64 Allegati::04 , tenendo conto che ci può essere più di un allegato
+        }
+        if (!empty($array['AlgoritmoCompressione'])) {
+            if (strlen($array['AlgoritmoCompressione']) > 10) {
+                $errorContainer->addError(new ValidateError('Obect', FatturaElettronica::ERROR_LEVEL_INVALID, $tag . "Invalid 'AlgoritmoCompressione', max length is 10", 'Allegati::05', __LINE__));
+
+            }
+        }
+        if (!empty($array['FormatoAttachment'])) {
+            if (strlen($array['FormatoAttachment']) > 10) {
+                $errorContainer->addError(new ValidateError('Obect', FatturaElettronica::ERROR_LEVEL_INVALID, $tag . "Invalid 'FormatoAttachment', max length is 10", 'Allegati::06', __LINE__));
+
+            }
+        }
+        if (!empty($array['DescrizioneAttachment'])) {
+            if (strlen($array['DescrizioneAttachment']) > 100) {
+                $errorContainer->addError(new ValidateError('Obect', FatturaElettronica::ERROR_LEVEL_INVALID, $tag . "Invalid 'FormatoAttachment', max length is 100", 'Allegati::07', __LINE__));
+
+            }
+        }
     }
 
 }

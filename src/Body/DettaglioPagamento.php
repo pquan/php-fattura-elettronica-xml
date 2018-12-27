@@ -196,12 +196,12 @@ class DettaglioPagamento
     }
 
     /**
-     * @param string|null $ImportoPagamento
+     * @param float|null $ImportoPagamento
      * @return DettaglioPagamento
      */
-    public function setImportoPagamento(?string $ImportoPagamento): DettaglioPagamento
+    public function setImportoPagamento(?float $ImportoPagamento): DettaglioPagamento
     {
-        $this->ImportoPagamento = $ImportoPagamento;
+        $this->ImportoPagamento = number_format($ImportoPagamento, 2, '.', '');
         return $this;
     }
 
@@ -488,7 +488,8 @@ class DettaglioPagamento
             'DataRiferimentoTerminiPagamento' => $this->getDataRiferimentoTerminiPagamento(),
             'GiorniTerminiPagamento' => $this->getGiorniTerminiPagamento(),
             'DataScadenzaPagamento' => $this->getDataScadenzaPagamento(),
-            'ImportoPagamento' => !empty($this->getImportoPagamento()) ? number_format($this->getImportoPagamento(), 2, '.', '') : null,
+//            'ImportoPagamento' => !empty($this->getImportoPagamento()) ? number_format($this->getImportoPagamento(), 2, '.', '') : null,
+            'ImportoPagamento' => !empty($this->getImportoPagamento()) ? $this->getImportoPagamento() : null,
             'CodUfficioPostale' => $this->getCodUfficioPostale(),
             'CognomeQuietanzante' => $this->CognomeQuietanzante,
             'NomeQuietanzante' => $this->getNomeQuietanzante(),

@@ -11,7 +11,7 @@ namespace Advinser\FatturaElettronicaXml\Body;
 class DettaglioLinea
 {
     /**
-     * @var string|null
+     * @var int|null
      */
     private $NumeroLinea;
     /**
@@ -100,25 +100,25 @@ class DettaglioLinea
     private $RiferimentoData;
 
     /**
-     * @return null|string
+     * @return int|null
      */
-    public function getNumeroLinea(): ?string
+    public function getNumeroLinea(): ?int
     {
         return $this->NumeroLinea;
     }
 
     /**
-     * @param null|string $NumeroLinea
+     * @param int|null $NumeroLinea
      * @return DettaglioLinea
      */
-    public function setNumeroLinea(?string $NumeroLinea): DettaglioLinea
+    public function setNumeroLinea(?int $NumeroLinea): DettaglioLinea
     {
         $this->NumeroLinea = $NumeroLinea;
         return $this;
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getTipoCessionePrestazione(): ?string
     {
@@ -126,7 +126,7 @@ class DettaglioLinea
     }
 
     /**
-     * @param null|string $TipoCessionePrestazione
+     * @param string|null $TipoCessionePrestazione
      * @return DettaglioLinea
      */
     public function setTipoCessionePrestazione(?string $TipoCessionePrestazione): DettaglioLinea
@@ -136,7 +136,7 @@ class DettaglioLinea
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getCodiceTipo(): ?string
     {
@@ -144,7 +144,7 @@ class DettaglioLinea
     }
 
     /**
-     * @param null|string $CodiceTipo
+     * @param string|null $CodiceTipo
      * @return DettaglioLinea
      */
     public function setCodiceTipo(?string $CodiceTipo): DettaglioLinea
@@ -154,7 +154,7 @@ class DettaglioLinea
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getCodiceValore(): ?string
     {
@@ -162,7 +162,7 @@ class DettaglioLinea
     }
 
     /**
-     * @param null|string $CodiceValore
+     * @param string|null $CodiceValore
      * @return DettaglioLinea
      */
     public function setCodiceValore(?string $CodiceValore): DettaglioLinea
@@ -172,7 +172,7 @@ class DettaglioLinea
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getDescrizione(): ?string
     {
@@ -180,7 +180,7 @@ class DettaglioLinea
     }
 
     /**
-     * @param null|string $Descrizione
+     * @param string|null $Descrizione
      * @return DettaglioLinea
      */
     public function setDescrizione(?string $Descrizione): DettaglioLinea
@@ -190,7 +190,7 @@ class DettaglioLinea
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getQuantita(): ?string
     {
@@ -198,17 +198,18 @@ class DettaglioLinea
     }
 
     /**
-     * @param null|string $Quantita
+     * @param float|null $Quantita
+     * @param int $precision
      * @return DettaglioLinea
      */
-    public function setQuantita(?string $Quantita): DettaglioLinea
+    public function setQuantita(?float $Quantita, int $precision = 8): DettaglioLinea
     {
-        $this->Quantita = $Quantita;
+        $this->Quantita = number_format($Quantita, $precision, '.', '');
         return $this;
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getUnitaMisura(): ?string
     {
@@ -216,7 +217,7 @@ class DettaglioLinea
     }
 
     /**
-     * @param null|string $UnitaMisura
+     * @param string|null $UnitaMisura
      * @return DettaglioLinea
      */
     public function setUnitaMisura(?string $UnitaMisura): DettaglioLinea
@@ -226,7 +227,7 @@ class DettaglioLinea
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getDataInizioPeriodo(): ?string
     {
@@ -234,7 +235,7 @@ class DettaglioLinea
     }
 
     /**
-     * @param null|string $DataInizioPeriodo
+     * @param string|null $DataInizioPeriodo
      * @return DettaglioLinea
      */
     public function setDataInizioPeriodo(?string $DataInizioPeriodo): DettaglioLinea
@@ -244,7 +245,7 @@ class DettaglioLinea
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getDataFinePeriodo(): ?string
     {
@@ -252,7 +253,7 @@ class DettaglioLinea
     }
 
     /**
-     * @param null|string $DataFinePeriodo
+     * @param string|null $DataFinePeriodo
      * @return DettaglioLinea
      */
     public function setDataFinePeriodo(?string $DataFinePeriodo): DettaglioLinea
@@ -262,7 +263,7 @@ class DettaglioLinea
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getPrezzoUnitario(): ?string
     {
@@ -270,17 +271,18 @@ class DettaglioLinea
     }
 
     /**
-     * @param null|string $PrezzoUnitario
+     * @param float|null $PrezzoUnitario
+     * @param int $Precision
      * @return DettaglioLinea
      */
-    public function setPrezzoUnitario(?string $PrezzoUnitario): DettaglioLinea
+    public function setPrezzoUnitario(?float $PrezzoUnitario, int $Precision = 8): DettaglioLinea
     {
-        $this->PrezzoUnitario = $PrezzoUnitario;
+        $this->PrezzoUnitario = number_format($PrezzoUnitario, $Precision, '.', '');
         return $this;
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getScontoTipo(): ?string
     {
@@ -288,7 +290,7 @@ class DettaglioLinea
     }
 
     /**
-     * @param null|string $ScontoTipo
+     * @param string|null $ScontoTipo
      * @return DettaglioLinea
      */
     public function setScontoTipo(?string $ScontoTipo): DettaglioLinea
@@ -298,7 +300,7 @@ class DettaglioLinea
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getScontoPercentuale(): ?string
     {
@@ -306,17 +308,17 @@ class DettaglioLinea
     }
 
     /**
-     * @param null|string $ScontoPercentuale
+     * @param float|null $ScontoPercentuale
      * @return DettaglioLinea
      */
-    public function setScontoPercentuale(?string $ScontoPercentuale): DettaglioLinea
+    public function setScontoPercentuale(?float $ScontoPercentuale): DettaglioLinea
     {
-        $this->ScontoPercentuale = $ScontoPercentuale;
+        $this->ScontoPercentuale = number_format($ScontoPercentuale, 2, '.', '');
         return $this;
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getScontoImporto(): ?string
     {
@@ -324,17 +326,17 @@ class DettaglioLinea
     }
 
     /**
-     * @param null|string $ScontoImporto
+     * @param float|null $ScontoImporto
      * @return DettaglioLinea
      */
-    public function setScontoImporto(?string $ScontoImporto): DettaglioLinea
+    public function setScontoImporto(?float $ScontoImporto): DettaglioLinea
     {
-        $this->ScontoImporto = $ScontoImporto;
+        $this->ScontoImporto = number_format($ScontoImporto, 2, '.', '');
         return $this;
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getPrezzoTotale(): ?string
     {
@@ -342,17 +344,18 @@ class DettaglioLinea
     }
 
     /**
-     * @param null|string $PrezzoTotale
+     * @param float|null $PrezzoTotale
+     * @param int $Precision
      * @return DettaglioLinea
      */
-    public function setPrezzoTotale(?string $PrezzoTotale): DettaglioLinea
+    public function setPrezzoTotale(?float $PrezzoTotale, int $Precision = 8): DettaglioLinea
     {
-        $this->PrezzoTotale = $PrezzoTotale;
+        $this->PrezzoTotale = number_format($PrezzoTotale, $Precision, '.', '');
         return $this;
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getAliquotaIVA(): ?string
     {
@@ -360,17 +363,17 @@ class DettaglioLinea
     }
 
     /**
-     * @param null|string $AliquotaIVA
+     * @param float|null $AliquotaIVA
      * @return DettaglioLinea
      */
-    public function setAliquotaIVA(?string $AliquotaIVA): DettaglioLinea
+    public function setAliquotaIVA(?float $AliquotaIVA): DettaglioLinea
     {
-        $this->AliquotaIVA = $AliquotaIVA;
+        $this->AliquotaIVA = number_format($AliquotaIVA, 2, '.', '');
         return $this;
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getRitenuta(): ?string
     {
@@ -378,7 +381,7 @@ class DettaglioLinea
     }
 
     /**
-     * @param null|string $Ritenuta
+     * @param string|null $Ritenuta
      * @return DettaglioLinea
      */
     public function setRitenuta(?string $Ritenuta): DettaglioLinea
@@ -388,7 +391,7 @@ class DettaglioLinea
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getNatura(): ?string
     {
@@ -396,7 +399,7 @@ class DettaglioLinea
     }
 
     /**
-     * @param null|string $Natura
+     * @param string|null $Natura
      * @return DettaglioLinea
      */
     public function setNatura(?string $Natura): DettaglioLinea
@@ -406,7 +409,7 @@ class DettaglioLinea
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getRiferimentoAmministrazione(): ?string
     {
@@ -414,7 +417,7 @@ class DettaglioLinea
     }
 
     /**
-     * @param null|string $RiferimentoAmministrazione
+     * @param string|null $RiferimentoAmministrazione
      * @return DettaglioLinea
      */
     public function setRiferimentoAmministrazione(?string $RiferimentoAmministrazione): DettaglioLinea
@@ -424,7 +427,7 @@ class DettaglioLinea
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getTipoDato(): ?string
     {
@@ -432,7 +435,7 @@ class DettaglioLinea
     }
 
     /**
-     * @param null|string $TipoDato
+     * @param string|null $TipoDato
      * @return DettaglioLinea
      */
     public function setTipoDato(?string $TipoDato): DettaglioLinea
@@ -442,7 +445,7 @@ class DettaglioLinea
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getRiferimentoTesto(): ?string
     {
@@ -450,7 +453,7 @@ class DettaglioLinea
     }
 
     /**
-     * @param null|string $RiferimentoTesto
+     * @param string|null $RiferimentoTesto
      * @return DettaglioLinea
      */
     public function setRiferimentoTesto(?string $RiferimentoTesto): DettaglioLinea
@@ -460,7 +463,7 @@ class DettaglioLinea
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getRiferimentoNumero(): ?string
     {
@@ -468,7 +471,7 @@ class DettaglioLinea
     }
 
     /**
-     * @param null|string $RiferimentoNumero
+     * @param string|null $RiferimentoNumero
      * @return DettaglioLinea
      */
     public function setRiferimentoNumero(?string $RiferimentoNumero): DettaglioLinea
@@ -478,7 +481,7 @@ class DettaglioLinea
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getRiferimentoData(): ?string
     {
@@ -486,7 +489,7 @@ class DettaglioLinea
     }
 
     /**
-     * @param null|string $RiferimentoData
+     * @param string|null $RiferimentoData
      * @return DettaglioLinea
      */
     public function setRiferimentoData(?string $RiferimentoData): DettaglioLinea
@@ -494,7 +497,6 @@ class DettaglioLinea
         $this->RiferimentoData = $RiferimentoData;
         return $this;
     }
-
 
     public function toArray()
     {
@@ -504,14 +506,14 @@ class DettaglioLinea
             'TipoCessionePrestazione' => $this->getTipoCessionePrestazione(),
             'CodiceArticolo' => null,
             'Descrizione' => $this->getDescrizione(),
-            'Quantita' => !empty($this->getQuantita()) ? number_format(floatval($this->getQuantita()), 2, '.', '') : null,
+            'Quantita' => !empty($this->getQuantita()) ? $this->getQuantita() : null,
             'UnitaMisura' => $this->getUnitaMisura(),
             'DataInizioPeriodo' => $this->getDataInizioPeriodo(),
             'DataFinePeriodo' => $this->getDataFinePeriodo(),
-            'PrezzoUnitario' => number_format(floatval($this->getPrezzoUnitario()), 2, '.', ''),
+            'PrezzoUnitario' => !empty($this->getPrezzoUnitario()) ? $this->getPrezzoUnitario() : null,
             'ScontoMaggiorazione' => null,
-            'PrezzoTotale' => number_format(floatval($this->getPrezzoTotale()), 2, '.', ''),
-            'AliquotaIVA' => number_format(floatval($this->getAliquotaIVA()), 2, '.', ''),
+            'PrezzoTotale' => !empty($this->getPrezzoTotale()) ? $this->getPrezzoTotale() : null,
+            'AliquotaIVA' => !empty($this->getAliquotaIVA()) ? $this->getAliquotaIVA() : null,
             'Ritenuta' => $this->getRitenuta(),
             'Natura' => $this->getNatura(),
             'RiferimentoAmministrazione' => $this->getRiferimentoAmministrazione(),
@@ -536,9 +538,8 @@ class DettaglioLinea
             $array['ScontoMaggiorazione']['Percentuale'] = $this->getScontoPercentuale();
         }
         if (!empty($this->getScontoImporto())) {
-            $array['ScontoMaggiorazione']['Importo'] = number_format(floatval($this->getScontoImporto()), 2, '.', '');
+            $array['ScontoMaggiorazione']['Importo'] = $this->getScontoImporto();
         }
-
         if (!empty($this->getTipoDato())) {
             $array['AltriDatiGestionali']['TipoDato'] = $this->getTipoDato();
         }
@@ -551,7 +552,6 @@ class DettaglioLinea
         if (!empty($this->getRiferimentoData())) {
             $array['AltriDatiGestionali']['RiferimentoData'] = $this->getRiferimentoData();
         }
-
 
         return $array;
     }
@@ -603,7 +603,6 @@ class DettaglioLinea
         if (isset($array['RiferimentoAmministrazione'])) {
             $o->setRiferimentoAmministrazione($array['RiferimentoAmministrazione']);
         }
-
 
         if (!empty($array['CodiceArticolo']['CodiceTipo'])) {
             $o->setCodiceTipo($array['CodiceArticolo']['CodiceTipo']);
