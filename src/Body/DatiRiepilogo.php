@@ -8,6 +8,8 @@
 namespace Advinser\FatturaElettronicaXml\Body;
 
 
+use Advinser\FatturaElettronicaXml\Validation\ValidateErrorContainer;
+
 class DatiRiepilogo
 {
     /**
@@ -96,9 +98,9 @@ class DatiRiepilogo
      * @param string|null $SpeseAccessorie
      * @return DatiRiepilogo
      */
-    public function setSpeseAccessorie(?float $SpeseAccessorie): DatiRiepilogo
+    public function setSpeseAccessorie(?float $SpeseAccessorie, int $Precision = 8): DatiRiepilogo
     {
-        $this->SpeseAccessorie = number_format($SpeseAccessorie, 2, '.', '');
+        $this->SpeseAccessorie = number_format($SpeseAccessorie, $Precision, '.', '');
         return $this;
     }
 
@@ -133,7 +135,7 @@ class DatiRiepilogo
      * @param float|null $ImponibileImporto
      * @return DatiRiepilogo
      */
-    public function setImponibileImporto(?float $ImponibileImporto): DatiRiepilogo
+    public function setImponibileImporto(?float $ImponibileImporto,$Precision = 8): DatiRiepilogo
     {
         $this->ImponibileImporto = number_format($ImponibileImporto, 2, '.', '');
         return $this;
@@ -256,5 +258,16 @@ class DatiRiepilogo
         }
 
         return $o;
+    }
+
+    /**
+     * @param array $array
+     * @param ValidateErrorContainer $errorContainer
+     * @param string $tag
+     */
+    public static function validate(array $array, ValidateErrorContainer $errorContainer, $tag = '')
+    {
+        //todo validation
+
     }
 }

@@ -133,7 +133,7 @@ class CessionarioCommittente
      */
     public function setCodiceFiscale(string $CodiceFiscale): CessionarioCommittente
     {
-        $this->CodiceFiscale = $CodiceFiscale;
+        $this->CodiceFiscale = strtoupper($CodiceFiscale);
         return $this;
     }
 
@@ -502,9 +502,8 @@ class CessionarioCommittente
      * @param ValidateErrorContainer $errorContainer
      */
     public static function validate($array,ValidateErrorContainer $errorContainer){
-        if(empty($array['DatiAnagrafici']['IdFiscaleIVA'])){
-            $errorContainer->addError(new ValidateError('Obect',FatturaElettronica::ERROR_LEVEL_REQUIRED,"Invalid value for 'RegimeFiscale', it can't be null or empty",'CessionarioCommittente::01',__LINE__));
-        }else{
+        if(!empty($array['DatiAnagrafici']['IdFiscaleIVA'])){
+            //todo check if CodiceFiscale is not empty, otherwise this element is required
             Fiscale::validate($array['DatiAnagrafici']['IdFiscaleIVA'],$errorContainer,'CessionarioCommittente::');
         }
 
@@ -528,9 +527,7 @@ class CessionarioCommittente
             Indirizzo::validate($array['StabileOrganizzazione'],$errorContainer,'CessionarioCommittente::StabileOrganizzazione::');
         }
 
-        if(empty($array['RappresentanteFiscale']['IdFiscaleIVA'])){
-            $errorContainer->addError(new ValidateError('Obect',FatturaElettronica::ERROR_LEVEL_REQUIRED,"Invalid value for 'RegimeFiscale', it can't be null or empty",'CessionarioCommittente::05',__LINE__));
-        }else{
+        if(!empty($array['RappresentanteFiscale']['IdFiscaleIVA'])){
             Fiscale::validate($array['RappresentanteFiscale']['IdFiscaleIVA'],$errorContainer,'CessionarioCommittente::');
         }
 
@@ -561,10 +558,6 @@ class CessionarioCommittente
         if($denominazioneIsset && ($nomeIsset || $cognomeIsset)){
             $errorContainer->addError(new ValidateError('', FatturaElettronica::ERROR_LEVEL_INVALID, $tag . "'Denominazione' can be used only if 'Nome' or 'Cognome' are not", $tag . 'CessionarioCommittente::09', __LINE__));
 
-        }
-
-        if(!$denominazioneIsset && (!$nomeIsset || !$cognomeIsset)){
-            $errorContainer->addError(new ValidateError('', FatturaElettronica::ERROR_LEVEL_INVALID, $tag . " one of 'Denominazione' or 'Nome' and 'Cognome' must be used", $tag . 'CessionarioCommittente::10', __LINE__));
         }
 
     }

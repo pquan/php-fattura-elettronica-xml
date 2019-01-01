@@ -162,7 +162,7 @@ class CedentePrestatore
      */
     public function setCodiceFiscale(?string $CodiceFiscale): CedentePrestatore
     {
-        $this->CodiceFiscale = $CodiceFiscale;
+        $this->CodiceFiscale = strtoupper($CodiceFiscale);
         return $this;
     }
 
@@ -267,7 +267,6 @@ class CedentePrestatore
     /**
      * @param string $RegimeFiscale
      * @return $this
-     * @throws FatturaElettronicaException
      */
     public function setRegimeFiscale(string $RegimeFiscale)
     {
